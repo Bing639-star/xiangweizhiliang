@@ -1,0 +1,659 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="乡味智链——乡村特色农产品数字化展示与产销意向服务平台">
+    <title>乡味智链｜让乡土好物被更多人看见</title>
+    <style>
+        :root {
+            --green: #234b35;
+            --green-light: #426b4a;
+            --cream: #f8f6ef;
+            --gold: #d8ad64;
+            --text: #26372b;
+            --muted: #777e73;
+            --white: #fff;
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+            color: var(--text);
+            background: var(--cream);
+            line-height: 1.7;
+        }
+        a { color: inherit; text-decoration: none; }
+        button, a { -webkit-tap-highlight-color: transparent; }
+
+        .hero {
+            min-height: 570px;
+            padding: 75px 7%;
+            display: flex;
+            align-items: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            background:
+                    linear-gradient(90deg, rgba(18,47,31,.91) 0%, rgba(26,59,37,.75) 48%, rgba(26,59,37,.12) 100%),
+                    url("images/首页.jpg")
+                    center 54% / cover;
+        }
+        .hero-content { max-width: 660px; position: relative; z-index: 1; }
+        .eyebrow {
+            color: #f1d49a;
+            font-size: 13px;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+        }
+        .hero h1 {
+            font-size: clamp(38px, 5.5vw, 68px);
+            line-height: 1.23;
+            margin: 0 0 24px;
+            letter-spacing: 2px;
+        }
+        .hero h1 span { color: #edce8a; }
+        .hero p {
+            font-size: 16px;
+            color: #e3e8dd;
+            max-width: 520px;
+            margin-bottom: 34px;
+        }
+        .actions { display: flex; flex-wrap: wrap; gap: 14px; }
+        .btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 13px 25px;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: transform .2s, background .2s;
+        }
+        .btn:hover { transform: translateY(-3px); }
+        .btn-gold { background: var(--gold); color: #24372a; font-weight: 700; }
+        .btn-outline { border: 1px solid rgba(255,255,255,.7); color: white; }
+
+        .hero-note {
+            position: absolute;
+            right: 7%;
+            bottom: 32px;
+            color: rgba(255,255,255,.85);
+            font-size: 15px;
+            letter-spacing: 2px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            background: white;
+            padding: 27px 7%;
+            gap: 20px;
+            border-bottom: 1px solid #eeece4;
+        }
+        .stat { text-align: center; border-right: 1px solid #e9e6dc; }
+        .stat:last-child { border: 0; }
+        .stat strong { display: block; color: var(--green); font-size: 25px; }
+        .stat span { color: var(--muted); font-size: 13px; }
+
+        .section { padding: 82px 7%; }
+        .section-heading { text-align: center; margin-bottom: 42px; }
+        .section-heading .en {
+            font-size: 11px;
+            color: #a57b3d;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+        .section-heading h2 { font-size: 32px; margin: 7px 0 12px; color: var(--green); }
+        .section-heading p { color: var(--muted); font-size: 14px; margin: 0; }
+
+        .products {
+            position: relative;
+            overflow: hidden;
+        }
+        .carousel-track {
+            display: flex;
+            transition: transform 0.1s ease;
+
+        }
+        .carousel-slide {
+            min-width: 33.333%;
+            padding: 0 12px;
+            box-sizing: border-box;
+        }
+        .product-card {
+            background: white;
+            border-radius: 9px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(40,55,36,.05);
+            transition: transform .25s, box-shadow .25s;
+            cursor: pointer;
+        }
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 14px 35px rgba(40,55,36,.12);
+        }
+        .product-image { height: 300px; overflow: hidden; position: relative; background: #e4e7d9; }
+        .product-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+        .product-card:hover img { transform: scale(1.06); }
+        .tag {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            background: rgba(248,246,239,.94);
+            color: var(--green);
+            padding: 5px 11px;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+        .product-info { padding: 18px 22px 22px; text-align: center; }
+        .product-info h3 { margin: 0; font-size: 20px; color: var(--green); }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #e0ddd4;
+            color: var(--green);
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,.1);
+            transition: background .2s, border-color .2s;
+        }
+        .carousel-btn:hover {
+            background: var(--green);
+            color: white;
+            border-color: var(--green);
+        }
+        .carousel-prev { left: 0; }
+        .carousel-next { right: 0; }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 28px;
+        }
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #d5d3ca;
+            border: none;
+            cursor: pointer;
+            transition: background .3s, transform .3s;
+        }
+        .carousel-dot.active {
+            background: var(--green);
+            transform: scale(1.3);
+        }
+
+
+        .story {
+            background: #eaece1;
+            display: grid;
+            grid-template-columns: 0.85fr 1.15fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .story-image { height: 300px; border-radius: 7px; overflow: hidden; }
+        .story-image img { width: 90%; height: 100%; object-fit: cover; display: block; }
+
+
+
+        .story-copy .eyebrow { color: #9d763d; margin: 0 0 10px; }
+        .story-copy h2 { color: var(--green); font-size: 34px; line-height: 1.4; margin: 0 0 20px; }
+        .story-copy p { color: #626e61; font-size: 14px; margin-bottom: 25px; }
+        .story-points { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 28px; }
+        .story-point { border-left: 3px solid var(--gold); padding-left: 12px; }
+        .story-point strong { display: block; color: var(--green); font-size: 15px; }
+        .story-point span { color: var(--muted); font-size: 12px; }
+
+        .process {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+        .process-item { background: white; padding: 28px; border-radius: 7px; }
+        .process-num { color: #b38c4e; font-size: 12px; letter-spacing: 2px; }
+        .process-item h3 { color: var(--green); margin: 8px 0; font-size: 19px; }
+        .process-item p { font-size: 13px; color: var(--muted); margin: 0; }
+
+        .cta {
+            margin: 0 7% 80px;
+            padding: 48px 6%;
+            border-radius: 9px;
+            background: var(--green);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+        }
+        .cta h2 { font-size: 28px; margin: 0 0 8px; }
+        .cta p { color: #d9e0d5; font-size: 13px; margin: 0; }
+
+        footer {
+            background: #1c3526;
+            color: #d5ded2;
+            padding: 35px 7%;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            font-size: 12px;
+        }
+        footer strong { color: white; font-size: 17px; }
+        footer p { margin: 5px 0; }
+
+        @media (max-width: 760px) {
+            .topbar { height: auto; min-height: 70px; padding: 15px 5%; align-items: flex-start; }
+            .brand { font-size: 19px; }
+            .nav { gap: 12px; flex-wrap: wrap; justify-content: flex-end; font-size: 12px; }
+            .nav .nav-cta { padding: 7px 10px; }
+            .hero { min-height: 500px; padding: 65px 6%; background-position: center; }
+            .hero h1 { font-size: 42px; }
+            .hero-note { display: none; }
+            .section { padding: 58px 6%; }
+            .section-heading h2 { font-size: 27px; }
+            .carousel-slide { min-width: 100%; }
+            .product-image { height: 250px; }
+            .story { grid-template-columns: 1fr; gap: 30px; }
+            .story-image, .story-image img { min-height: 260px; }
+            .process { grid-template-columns: 1fr; }
+            .cta { margin: 0 5% 55px; flex-direction: column; align-items: flex-start; }
+            .stats { padding: 22px 4%; gap: 8px; }
+            .stat strong { font-size: 21px; }
+            .stat span { font-size: 11px; }
+        }
+
+        /* ===== 首页统一导航兼容样式 ===== */
+        header.nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 16px 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(248, 246, 239, 0.97);
+            border-bottom: 1px solid #e8e5da;
+        }
+
+        header.nav .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--green);
+            text-decoration: none;
+            font-size: 23px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        header.nav .logo-mark {
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+            border-radius: 50% 50% 45% 15%;
+            background: var(--green);
+            color: #f2d59b;
+            display: grid;
+            place-items: center;
+        }
+
+        header.nav .nav-links {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            font-size: 14px;
+        }
+
+        header.nav .nav-links a {
+            color: var(--green);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        header.nav .nav-links a:hover,
+        header.nav .nav-links a.active {
+            color: #b28643;
+        }
+
+        header.nav .nav-cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 11px 20px;
+            border-radius: 5px;
+            background: var(--green);
+            color: white;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 760px) {
+            header.nav {
+                flex-wrap: wrap;
+                gap: 12px;
+                padding: 12px 4%;
+            }
+
+            header.nav .logo {
+                font-size: 19px;
+            }
+
+            header.nav .nav-links {
+                order: 3;
+                width: 100%;
+                justify-content: space-between;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            header.nav .nav-links a {
+                padding: 8px 2px;
+                font-size: 13px;
+            }
+
+            header.nav .nav-cta {
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+        }
+
+
+    </style>
+</head>
+
+<body>
+
+
+<header class="nav">
+    <a class="logo" href="index.html">
+        <span class="logo-mark">乡</span>
+        乡味智链
+    </a>
+
+    <nav class="nav-links" aria-label="主导航">
+        <a class="active" href="index.html">首页</a>
+        <a href="product.html">产品档案</a>
+        <a href="culture.html">乡村文化</a>
+        <a href="ai-features.html">AI 功能</a>
+    </nav>
+
+    <a class="nav-cta" href="contact.html">合作咨询 ↗</a>
+</header>
+
+
+<main>
+    <section class="hero">
+        <div class="hero-content">
+            <div class="eyebrow">NANYANG RURAL PRODUCTS · DIGITAL INNOVATION</div>
+            <h1>让南阳好物<br>被<span>更多人看见</span></h1>
+            <p>
+                立足河南南阳特色农业资源，数字化展示地方农产品、产地风貌与乡土文化。
+                让每一份南阳好物都有清晰档案，让每一个特色产地都能被更多人了解。
+            </p>
+
+        </div>
+        <div class="hero-note">南阳 · 品牌 · 连接 · 共生</div>
+    </section>
+
+    <section class="stats" aria-label="平台服务理念">
+        <div class="stat">
+            <strong>数字建档</strong>
+            <span>让特色农品信息更清晰</span>
+        </div>
+        <div class="stat">
+            <strong>乡土文化</strong>
+            <span>展示南阳乡村风貌与地方产业故事</span>
+        </div>
+        <div class="stat">
+            <strong>产销连接</strong>
+            <span>让合作需求有处可寻</span>
+        </div>
+    </section>
+
+    <section class="section" id="products">
+        <div class="section-heading">
+            <div class="en">Selected from the countryside</div>
+            <h2>发现南阳好物</h2>
+            <p>从产地环境到产品故事，建立更有温度的农产品数字档案</p>
+        </div>
+
+
+        <div class="products">
+            <button class="carousel-btn carousel-prev" id="carouselPrev">&#8249;</button>
+            <button class="carousel-btn carousel-next" id="carouselNext">&#8250;</button>
+
+            <div class="carousel-track" id="carouselTrack">
+                <div class="carousel-slide">
+                    <article class="product-card" onclick="location.href='product.html'">
+                        <div class="product-image">
+                            <img src="images/西峡猕猴桃.jpg" alt="西峡猕猴桃" loading="lazy">
+                            <span class="tag">果品特产</span>
+                        </div>
+                        <div class="product-info">
+                            <h3>西峡猕猴桃</h3>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="carousel-slide">
+                    <article class="product-card" onclick="location.href='product.html'">
+                        <div class="product-image">
+                            <img src="images/西峡香菇.jpg" alt="西峡香菇" loading="lazy">
+                            <span class="tag">菌菇特产</span>
+                        </div>
+                        <div class="product-info">
+                            <h3>西峡香菇</h3>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="carousel-slide">
+                    <article class="product-card" onclick="location.href='product.html'">
+                        <div class="product-image">
+                            <img src="images/南召辛夷.jpg" alt="南召辛夷" loading="lazy">
+                            <span class="tag">中药材</span>
+                        </div>
+                        <div class="product-info">
+                            <h3>南召辛夷</h3>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="carousel-slide">
+                    <article class="product-card" onclick="location.href='product.html'">
+                        <div class="product-image">
+                            <img src="images/南阳月季.jpg" alt="南阳月季" loading="lazy">
+                            <span class="tag">花卉产业</span>
+                        </div>
+                        <div class="product-info">
+                            <h3>南阳月季</h3>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="carousel-slide">
+                    <article class="product-card" onclick="location.href='product.html'">
+                        <div class="product-image">
+                            <img src="images/桐柏茶叶.jpg" alt="桐柏茶叶" loading="lazy">
+                            <span class="tag">茶叶特产</span>
+                        </div>
+                        <div class="product-info">
+                            <h3>桐柏茶叶</h3>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="carousel-slide">
+                    <article class="product-card" onclick="location.href='product.html'">
+                        <div class="product-image">
+                            <img src="images/南阳黄牛.jpg" alt="南阳黄牛" loading="lazy">
+                            <span class="tag">畜牧产业</span>
+                        </div>
+                        <div class="product-info">
+                            <h3>南阳黄牛</h3>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <div class="carousel-dots" id="carouselDots"></div>
+        </div>
+
+    </section>
+
+    <section class="section story">
+        <div class="story-image">
+            <video src="images/南阳故事.mp4"
+                   autoplay muted loop playsinline                   style="width:100%;height:100%;object-fit:cover;display:block;">
+            </video>
+        </div>
+        <div class="story-copy">
+            <div class="eyebrow">OUR VISION · 南阳乡村数字化</div>
+            <h2>不止展示产品，<br>更要讲好南阳故事。</h2>
+            <p>
+                南阳拥有丰富的特色农业资源与乡土文化。乡味智链尝试将产品档案、
+                产地介绍、乡村文化和采购意向整合到一个数字化展示平台，让农产品
+                信息更清晰，让地方特色更容易被发现，让产地与采购需求之间建立沟通渠道。
+            </p>
+            <div class="story-points">
+                <div class="story-point">
+                    <strong>产地有记录</strong>
+                    <span>整理产品来源与特色信息</span>
+                </div>
+                <div class="story-point">
+                    <strong>文化有表达</strong>
+                    <span>呈现地方故事与传统技艺</span>
+                </div>
+                <div class="story-point">
+                    <strong>需求有入口</strong>
+                    <span>收集潜在合作意向</span>
+                </div>
+                <div class="story-point">
+                    <strong>推广有路径</strong>
+                    <span>支持乡村数字品牌传播</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-heading">
+            <div class="en">How it works</div>
+            <h2>让南阳资源连接市场</h2>
+            <p>以轻量化数字服务，探索乡村特色产业传播与合作的新方式</p>
+        </div>
+        <div class="process">
+            <article class="process-item">
+                <div class="process-num">STEP 01 / 展示</div>
+                <h3>建立农品数字档案</h3>
+                <p>通过图片、文字与产地介绍，集中呈现特色农产品信息。</p>
+            </article>
+            <article class="process-item">
+                <div class="process-num">STEP 02 / 连接</div>
+                <h3>提交合作意向</h3>
+                <p>让采购方登记关注的产品、需求数量及合作方式。</p>
+            </article>
+            <article class="process-item">
+                <div class="process-num">STEP 03 / 反馈</div>
+                <h3>辅助农户了解需求</h3>
+                <p>通过管理后台查看意向信息，为后续沟通提供参考。</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div>
+            <h2>让南阳好物遇见更多机会</h2>
+            <p>无论您是特色农产品生产者、合作社、加工企业，还是采购需求方，<br>都可以通过平台了解产品信息、提交合作意向。</p>
+        </div>
+        <a class="btn btn-gold" href="contact.html">登记合作意向　→</a>
+    </section>
+</main>
+
+<footer>
+    <div>
+        <strong>乡味智链</strong>
+        <p>河南南阳乡村特色农产品数字化展示平台</p>
+        <p>以数字化建档、乡土文化展示与产销信息对接，助力南阳特色农业传播。</p>
+    </div>
+    <div>
+        <p>数字传播乡土文化 · 轻量技术连接产业</p>
+        <p style="margin-top:10px"><a href="admin-login.html" style="color:#a0a59b;font-size:11px">管理员入口 →</a></p>    </div>
+
+</footer>
+
+<script>    (function() {
+    var track = document.getElementById("carouselTrack");
+    var slides = track.querySelectorAll(".carousel-slide");
+    var prevBtn = document.getElementById("carouselPrev");
+    var nextBtn = document.getElementById("carouselNext");
+    var dotsContainer = document.getElementById("carouselDots");
+
+    var currentIndex = 0;
+    var totalPositions = 4;
+
+    for (var i = 0; i < totalPositions; i++) {
+        var dot = document.createElement("button");
+        dot.className = "carousel-dot" + (i === 0 ? " active" : "");
+        dot.setAttribute("data-index", i);
+        dot.addEventListener("click", function() {
+            goToSlide(parseInt(this.getAttribute("data-index")));
+        });
+        dotsContainer.appendChild(dot);
+    }
+
+    function updateCarousel() {
+        var percent = currentIndex * (-100 / 3);
+        track.style.transform = "translateX(" + percent + "%)";
+
+        var dots = dotsContainer.querySelectorAll(".carousel-dot");
+        for (var i = 0; i < dots.length; i++) {
+            dots[i].className = "carousel-dot" + (i === currentIndex ? " active" : "");
+        }
+    }
+
+    function goToSlide(index) {
+        currentIndex = index;
+        if (currentIndex < 0) currentIndex = totalPositions - 1;
+        if (currentIndex >= totalPositions) currentIndex = 0;
+        updateCarousel();
+    }
+
+    prevBtn.addEventListener("click", function() { goToSlide(currentIndex - 1); });
+    nextBtn.addEventListener("click", function() { goToSlide(currentIndex + 1); });
+
+    var autoPlay = setInterval(function() { goToSlide(currentIndex + 1); }, 3000);
+
+    var productsSection = document.querySelector(".products");
+    productsSection.addEventListener("mouseenter", function() { clearInterval(autoPlay); });
+    productsSection.addEventListener("mouseleave", function() {
+        autoPlay = setInterval(function() { goToSlide(currentIndex + 1); }, 3000);
+    });
+})();
+</script>
+
+<link rel="stylesheet" href="ai-widget.css">
+<script src="ai-widget.js"></script>
+</body>
+</html>
