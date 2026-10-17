@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员登录｜乡味智链</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+            background: #f5f6f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .login-box {
+            background: #fff;
+            border-radius: 10px;
+            padding: 40px 35px;
+            width: 380px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        .login-box .logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: #244b35;
+            margin-bottom: 8px;
+        }
+        .login-box .logo span {
+            display: inline-grid;
+            place-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50% 50% 45% 15%;
+            background: #244b35;
+            color: #f2d59b;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        .login-box h2 {
+            font-size: 18px;
+            color: #244b35;
+            margin: 20px 0 6px;
+        }
+        .login-box .subtitle {
+            font-size: 12px;
+            color: #81877e;
+            margin-bottom: 25px;
+        }
+        .login-box input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #dfe3d9;
+            border-radius: 5px;
+            font-size: 14px;
+            outline: none;
+            margin-bottom: 15px;
+        }
+        .login-box input:focus {
+            border-color: #244b35;
+            box-shadow: 0 0 0 3px rgba(36,75,53,0.1);
+        }
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            background: #244b35;
+            color: #fff;
+            border: 0;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .login-box button:hover {
+            background: #315e43;
+        }
+        .login-box .error {
+            color: #a53b2b;
+            font-size: 12px;
+            margin-top: 12px;
+            display: none;
+        }
+        .login-box .back {
+            display: block;
+            margin-top: 18px;
+            font-size: 12px;
+            color: #81877e;
+            text-decoration: none;
+        }
+        .login-box .back:hover {
+            color: #244b35;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-box">
+    <div class="logo"><span>乡</span>乡味智链</div>
+    <h2>管理员登录</h2>
+    <p class="subtitle">请输入管理密码以访问数据管理中心</p>
+
+    <input type="password" id="passwordInput" placeholder="请输入管理密码" autocomplete="off">
+    <button id="loginBtn">登 录</button>
+    <div class="error" id="errorMsg">密码错误，请重新输入</div>
+
+    <a class="back" href="index.html">← 返回首页</a>
+</div>
+
+<script>
+    const ADMIN_PASSWORD = "xiangwei2026";
+
+    const passwordInput = document.getElementById("passwordInput");
+    const loginBtn = document.getElementById("loginBtn");
+    const errorMsg = document.getElementById("errorMsg");
+
+    function doLogin() {
+        const pwd = passwordInput.value.trim();
+        if (pwd === ADMIN_PASSWORD) {
+            window.location.href = "admin.html";
+        } else {
+            errorMsg.style.display = "block";
+            passwordInput.value = "";
+            passwordInput.focus();
+        }
+    }
+
+    loginBtn.addEventListener("click", doLogin);
+
+    passwordInput.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") doLogin();
+    });
+
+    passwordInput.focus();
+</script>
+
+</body>
+</html>

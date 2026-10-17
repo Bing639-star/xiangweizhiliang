@@ -1,0 +1,329 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产销合作登记｜乡味智链</title>
+    <style>
+        :root{
+            --green: #244b35;
+            --gold:#c79b52;
+            --cream:#f8f7f1;
+            --text:#29392d;
+            --muted:#7b8178;
+        }
+        *{box-sizing:border-box}
+        body{
+            margin:0;background:var(--cream);color:var(--text);
+            font-family:"Microsoft YaHei","PingFang SC",Arial,sans-serif;
+            line-height:1.7;
+        }
+        a{text-decoration:none;color:inherit}
+        .nav {
+            height: 76px;
+            padding: 0 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(248,246,239,0.97);
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            border-bottom: 1px solid #e8e5da;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 23px;
+            font-weight: 800;
+            color: var(--green);
+            letter-spacing: 1px;
+            text-decoration: none;
+        }
+        .logo-mark {
+            width: 42px;
+            height: 42px;
+            border-radius: 50% 50% 45% 15%;
+            background: var(--green);
+            color: #f2d59b;
+            display: grid;
+            place-items: center;
+            font-size: 23px;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            font-size: 14px;
+        }
+        .nav-links a {
+            color: var(--green);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #b28643;
+            font-weight: 700;
+        }
+        .nav-cta {
+            color: white;
+            background: var(--green);
+            padding: 11px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .nav-cta:hover {
+            background: var(--green-light);
+        }
+        .hero{background:var(--green);color:white;padding:52px 7%}
+        .hero small{color:#d6dfd2}
+        .hero h1{font-size:clamp(30px,4vw,42px);margin:12px 0}
+        .hero p{color:#dce4d9;font-size:14px;max-width:650px;margin:0}
+        main{
+            max-width:1100px;margin:0 auto;padding:42px 5% 65px;
+            display:grid;grid-template-columns:1fr 1.2fr;gap:35px;align-items:start;
+        }
+        .info{padding:12px 0}
+        .info h2{color:var(--green);font-size:26px;margin:0 0 12px}
+        .info>p{font-size:14px;color:var(--muted)}
+        .info-card{
+            background:#e9eee4;border-radius:7px;padding:20px;margin-top:25px;
+        }
+        .info-card h3{margin:0 0 8px;color:var(--green);font-size:16px}
+        .info-card p{font-size:13px;color:#667165;margin:5px 0}
+        .form-card{
+            background:white;border:1px solid #e9e8df;border-radius:9px;
+            padding:28px;box-shadow:0 8px 30px #253c3010;
+        }
+        .form-card h2{font-size:22px;color:var(--green);margin:0}
+        .subtitle{font-size:13px;color:var(--muted);margin:4px 0 23px}
+        .field{margin-bottom:17px}
+        label{display:block;font-size:13px;font-weight:bold;margin-bottom:6px}
+        .required{color:#b54d3b}
+        input,select,textarea{
+            width:100%;border:1px solid #dcded4;border-radius:5px;
+            background:#fff;padding:12px;color:var(--text);outline:none;
+            font:inherit;font-size:14px;
+        }
+        input:focus,select:focus,textarea:focus{
+            border-color:var(--green);box-shadow:0 0 0 3px #244b3512;
+        }
+        textarea{min-height:105px;resize:vertical}
+        .hint{font-size:11px;color:var(--muted);margin-top:5px}
+        .submit{
+            width:100%;padding:13px;border:0;border-radius:5px;
+            color:white;background:var(--green);font-weight:bold;font-size:14px;
+        }
+        .submit:hover{background:#315e43}
+        .submit:disabled{opacity:.6;cursor:wait}
+        .status{
+            display:none;margin-top:16px;padding:12px;border-radius:5px;
+            font-size:13px;overflow-wrap:anywhere;
+        }
+        .status.show{display:block}
+        .status.success{background:#e5f3e7;color:#245c35}
+        .status.error{background:#fff0ed;color:#a53b2b}
+        .privacy{font-size:11px;color:#858b80;margin-top:14px}
+        footer{
+            padding:25px 7%;background:#1d3728;color:#dce3d8;
+            font-size:12px;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;
+        }
+        @media(max-width:760px){
+            main{grid-template-columns:1fr;padding-top:28px}
+            .nav{
+                flex-wrap:wrap;
+                gap:12px;
+                padding:12px 4%;
+            }
+            .logo{font-size:19px}
+            .nav-links{
+                order:3;
+                width:100%;
+                justify-content:space-between;
+                gap:8px;
+            }
+            .nav-links a{padding:8px 2px;font-size:13px}
+            .nav-cta{padding:9px 12px;font-size:13px}
+            .form-card{padding:22px}
+            .hero{padding:40px 6%}
+        }
+    </style>
+</head>
+<body>
+
+<header class="nav">
+    <a class="logo" href="index.html">
+        <span class="logo-mark">乡</span>
+        乡味智链
+    </a>
+
+    <nav class="nav-links" aria-label="主导航">
+        <a href="index.html">首页</a>
+        <a href="product.html">产品档案</a>
+        <a href="culture.html">乡村文化</a>
+        <a href="ai-features.html">AI 功能</a>
+    </nav>
+
+    <a class="nav-cta" href="contact.html">合作咨询 ↗</a>
+</header>
+
+<section class="hero">
+    <small><a href="index.html">首页</a> / 产销对接</small>
+    <h1>让南阳好物<br>找到合适的合作伙伴</h1>
+    <p>无论您是农产品生产者、合作社、加工企业，还是有采购需求的商家，
+        都可以通过本页面提交合作意向。平台将记录需求信息，供项目管理人员后续查看与联系。</p>
+</section>
+
+<main>
+    <section class="info">
+        <h2>南阳特色农产品产销对接</h2>
+        <p>通过数字化信息登记，帮助南阳农户与采购方建立联系，为后续沟通提供依据。</p>
+
+        <div class="info-card">
+            <h3>合作流程</h3>
+            <p>01　填写合作意向信息</p>
+            <p>02　平台保存需求记录</p>
+            <p>03　管理人员查看并联系</p>
+        </div>
+
+        <div class="info-card">
+            <h3>本平台服务范围</h3>
+            <p>· 南阳特色农产品信息展示</p>
+            <p>· 采购需求意向收集</p>
+            <p>· 乡村产业资源数字化推介</p>
+        </div>
+
+        <p class="hint">提示：本平台当前提供信息展示与合作意向收集，不提供在线交易、支付或订单履约服务。</p>    </section>
+
+    <section class="form-card">
+        <h2>采购合作意向登记</h2>
+        <p class="subtitle">请填写真实、准确的信息，带 * 的为必填项。</p>
+
+        <form id="inquiryForm">
+            <div class="field">
+                <label for="name">联系人姓名 <span class="required">*</span></label>
+                <input id="name" name="name" maxlength="50" required
+                       autocomplete="name" placeholder="请输入联系人姓名">
+            </div>
+
+            <div class="field">
+                <label for="phone">联系电话 <span class="required">*</span></label>
+                <input id="phone" name="phone" type="tel" required
+                       inputmode="numeric" autocomplete="tel"
+                       pattern="1[3-9][0-9]{9}" maxlength="11"
+                       placeholder="请输入11位中国大陆手机号码">
+                <div class="hint">本演示版按中国大陆手机号码格式校验。</div>
+            </div>
+
+            <div class="field">
+                <label for="product">意向产品 <span class="required">*</span></label>
+                <select id="product" name="product" required>
+                    <option value="">请选择意向产品</option>
+                    <option value="西峡猕猴桃">西峡猕猴桃（果蔬特产）</option>
+                    <option value="西峡香菇">西峡香菇（菌菇特产）</option>
+                    <option value="南召辛夷">南召辛夷（中药材）</option>
+                    <option value="南阳月季">南阳月季（花卉产业）</option>
+                    <option value="桐柏茶叶">桐柏茶叶（茶叶特产）</option>
+                    <option value="南阳黄牛">南阳黄牛（畜牧产业）</option>
+                    <option value="其他产品">其他产品</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="quantity">意向采购数量 <span class="required">*</span></label>
+                <input id="quantity" name="quantity" type="number"
+                       min="1" max="100000000" step="1" required
+                       placeholder="请输入预计采购数量">
+                <div class="hint">请在备注中注明单位，例如：500 公斤、200 箱。数量暂按正整数记录。</div>
+            </div>
+
+            <div class="field">
+                <label for="note">需求备注</label>
+                <textarea id="note" name="note" maxlength="500"
+                          placeholder="可填写产品规格、包装需求、预计采购时间等（选填）"></textarea>
+            </div>
+            <div class="field">
+                <p style="font-size:12px;color:#667165;line-height:1.8;padding:12px;background:#f3f5ee;border-radius:5px;margin:0">
+                    请填写真实、准确的合作需求信息。提交内容仅用于本项目的合作意向记录与联系沟通，
+                    请勿填写与合作无关的敏感信息。
+                </p>
+            </div>
+            <button class="submit" id="submitBtn" type="submit">提交合作意向 →</button>
+            <div class="status" id="status" role="status" aria-live="polite"></div>
+            <p class="privacy">提交即表示你同意本平台为合作联系目的保存所填信息。平台不提供在线交易、支付或订单履约服务。</p>        </form>
+    </section>
+</main>
+
+<footer>
+    <div><strong>乡味智链</strong><br>河南南阳乡村特色农产品数字化展示平台</div>
+    <div>以数字化建档、乡土文化展示与产销信息对接，助力南阳特色农业传播。</div>
+</footer>
+
+<script>
+    const API_BASE = "http://localhost:3000";
+    const form = document.getElementById("inquiryForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const statusBox = document.getElementById("status");
+
+    function showStatus(message, type) {
+        statusBox.textContent = message;
+        statusBox.className = "status show " + type;
+    }
+
+    form.addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        if (!form.reportValidity()) return;
+
+        const formData = new FormData(form);
+        const payload = {
+            name: String(formData.get("name") || "").trim(),
+            phone: String(formData.get("phone") || "").trim(),
+            product: String(formData.get("product") || "").trim(),
+            quantity: Number(formData.get("quantity")),
+            note: String(formData.get("note") || "").trim()
+        };
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "正在提交…";
+        statusBox.className = "status";
+
+        try {
+            const response = await fetch(API_BASE + "/api/inquiries", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                throw new Error(result.message || "提交失败，请检查填写内容");
+            }
+
+            showStatus(
+                "提交成功！采购意向已保存到项目后端。记录编号：" + result.data.id,
+                "success"
+            );
+            form.reset();
+        } catch (error) {
+            console.error("提交失败：", error);
+            showStatus(
+                "提交失败：" + error.message +
+                "。请确认 IDEA 终端中的 Node.js 服务仍在运行，地址为 http://localhost:3000。",
+                "error"
+            );
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "提交合作意向 →";
+        }
+    });
+</script>
+<link rel="stylesheet" href="ai-widget.css">
+<script src="ai-widget.js"></script>
+</body>
+</html>

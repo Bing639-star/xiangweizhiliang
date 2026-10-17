@@ -1,0 +1,947 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据管理中心｜乡味智链</title>
+    <style>
+        :root{
+            --green:#244b35;
+            --green2:#376b4b;
+            --gold:#c79b52;
+            --bg:#f5f6f1;
+            --text:#28382d;
+            --muted:#81877e;
+            --line:#e9ebe3;
+        }
+        *{box-sizing:border-box}
+        body{
+            margin:0;background:var(--bg);color:var(--text);
+            font-family:"Microsoft YaHei","PingFang SC",Arial,sans-serif;
+        }
+        button{font:inherit;cursor:pointer}
+        .header{
+            height:72px;padding:0 5%;background:#fff;border-bottom:1px solid var(--line);
+            display:flex;align-items:center;justify-content:space-between;gap:16px;
+        }
+        .brand{font-size:20px;font-weight:800;color:var(--green)}
+        .brand span{
+            display:inline-grid;place-items:center;width:36px;height:36px;
+            border-radius:50%;background:var(--green);color:#f0d59c;margin-right:8px;
+        }
+        .header-right{display:flex;align-items:center;gap:15px;font-size:12px;color:var(--muted)}
+        .status-dot{
+            width:8px;height:8px;display:inline-block;background:#3b9a59;
+            border-radius:50%;margin-right:5px;
+        }
+        .layout{display:grid;grid-template-columns:215px minmax(0,1fr);min-height:calc(100vh - 72px)}
+        .dashboard{
+
+            display:flex;
+            gap:20px;
+            margin:20px 0;
+
+        }
+        .chart-container{
+
+            display:grid;
+
+            grid-template-columns:1fr 1fr;
+
+            gap:20px;
+
+            margin-top:30px;
+
+        }
+
+
+
+        .chart-box{
+
+            background:white;
+
+            border-radius:16px;
+
+            padding:20px;
+
+            box-shadow:0 5px 20px rgba(0,0,0,0.08);
+
+        }
+
+
+
+        .chart-box h2{
+
+            font-size:20px;
+
+            color:#267344;
+
+            text-align:center;
+
+        }
+
+
+
+        #productChart,
+        #timeChart{
+
+            width:100%;
+
+            height:350px;
+
+        }
+
+
+
+        @media(max-width:900px){
+
+            .chart-container{
+
+                grid-template-columns:1fr;
+
+            }
+
+        }
+
+
+        .card{
+
+            flex:1;
+
+            background:white;
+
+            padding:20px;
+
+            border-radius:15px;
+
+            box-shadow:0 5px 15px rgba(0,0,0,0.1);
+
+            text-align:center;
+
+        }
+
+
+        .card h3{
+
+            color:#4b7f52;
+
+        }
+
+
+        .card p{
+
+            font-size:32px;
+
+            font-weight:bold;
+
+        }
+        .sidebar{background:#fff;border-right:1px solid var(--line);padding:28px 15px}
+        .side-title{font-size:11px;color:#a0a59b;letter-spacing:2px;padding:0 12px;margin-bottom:14px}
+        .side-link{
+            display:block;padding:12px;border-radius:5px;font-size:13px;
+            color:#657066;text-decoration:none;margin-bottom:5px;
+        }
+        .side-link.active,.side-link:hover{background:#eaf0e7;color:var(--green);font-weight:bold}
+        .side-tip{
+            margin-top:30px;padding:14px;background:#f5f6f0;border-radius:5px;
+            color:var(--muted);font-size:11px;line-height:1.8;
+        }
+        main{padding:32px 4%;min-width:0}
+        .page-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:25px}
+        .page-heading h1{font-size:25px;color:var(--green);margin:0 0 6px}
+        .page-heading p{margin:0;color:var(--muted);font-size:12px}
+        .btn{
+            border:1px solid #dfe3d9;background:#fff;border-radius:5px;
+            padding:10px 15px;font-size:12px;color:var(--green);white-space:nowrap;
+        }
+        .btn.primary{background:var(--green);color:#fff;border-color:var(--green)}
+        .btn:disabled{opacity:.55;cursor:wait}
+        .alert{
+            display:none;padding:12px 15px;border-radius:5px;font-size:12px;
+            margin-bottom:18px;overflow-wrap:anywhere;
+        }
+        .alert.show{display:block}
+        .alert.error{background:#fff0ed;color:#a53b2b}
+        .alert.info{background:#eaf0e7;color:var(--green)}
+        .stats{
+            display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:22px;
+        }
+        .stat{
+            background:#fff;border:1px solid var(--line);border-radius:7px;
+            padding:22px;min-width:0;
+        }
+        .stat-label{font-size:12px;color:var(--muted)}
+        .stat-value{font-size:30px;font-weight:800;color:var(--green);margin:9px 0 4px;overflow-wrap:anywhere}
+        .stat-foot{font-size:11px;color:#9a9f96}
+        .content-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(260px,.75fr);gap:18px;margin-bottom:22px}
+        .panel{background:#fff;border:1px solid var(--line);border-radius:7px;padding:22px;min-width:0}
+        .panel-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+        .panel-heading h2{font-size:16px;margin:0;color:var(--green)}
+        .panel-heading span{font-size:11px;color:var(--muted)}
+        .chart-wrap{height:270px;position:relative;width:100%}
+        canvas{display:block;width:100%;height:100%}
+        .chart-empty{
+            display:none;position:absolute;inset:0;align-items:center;justify-content:center;
+            text-align:center;color:var(--muted);font-size:12px;
+        }
+        .chart-empty.show{display:flex}
+        .legend{font-size:11px;color:var(--muted);margin-top:10px}
+        .table-tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px}
+        .search{
+            flex:1;min-width:190px;border:1px solid #e0e3d9;background:#fff;
+            border-radius:5px;padding:10px 12px;font-size:12px;outline:none;
+        }
+        .table-wrap{overflow-x:auto}
+        table{width:100%;border-collapse:collapse;white-space:nowrap;font-size:12px}
+        th{
+            background:#f6f7f2;text-align:left;color:#687267;font-weight:600;
+            padding:13px 12px;border-bottom:1px solid var(--line);
+        }
+        td{padding:14px 12px;border-bottom:1px solid #eff0ea;color:#48564a}
+        tbody tr:hover{background:#fafbf7}
+        .product-tag{
+            display:inline-block;background:#eaf0e7;color:var(--green);
+            border-radius:3px;padding:4px 8px;font-size:11px;
+        }
+        .empty-row{text-align:center;padding:35px;color:var(--muted)}
+        .table-footer{
+            padding-top:14px;font-size:11px;color:var(--muted);
+            display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+        }
+        .disclaimer{margin-top:18px;color:#8a8f85;font-size:11px;line-height:1.8}
+        @media(max-width:1000px){
+            .layout{grid-template-columns:165px minmax(0,1fr)}
+            .content-grid{grid-template-columns:1fr}
+            .stats{gap:10px}
+            .stat{padding:16px}
+        }
+        @media(max-width:650px){
+            .header{padding:0 4%;height:64px}
+            .brand{font-size:16px}
+            .header-right{font-size:10px}
+            .layout{display:block}
+            .sidebar{padding:8px 4%;border-right:0;border-bottom:1px solid var(--line)}
+            .side-title,.side-tip{display:none}
+            .side-link{display:inline-block;padding:8px 10px;margin:0 3px 0 0}
+            main{padding:23px 4%}
+            .page-heading h1{font-size:21px}
+            .stats{grid-template-columns:1fr}
+            .stat-value{font-size:26px}
+            .panel{padding:15px}
+        }
+        .panel{padding:15px}
+
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        .content-grid.content-section.active { display: grid; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+</head>
+<body>
+
+<header class="header">
+    <a class="brand" href="index.html" style="text-decoration:none">
+        <span>乡</span>乡味智链
+    </a>
+    <div class="header-right">
+        <span><i class="status-dot"></i><span id="connectionText">正在连接后端</span></span>
+        <button class="btn" id="refreshBtn">↻ 刷新数据</button>
+    </div>
+</header>
+
+<div class="layout">
+    <aside class="sidebar">
+            <div class="side-title">管理中心</div>
+            <a class="side-link active" href="#" data-section="overview">▦ 数据总览</a>
+            <a class="side-link" href="#" data-section="chartPanel">▥ 需求统计</a>
+            <a class="side-link" href="#" data-section="records">☷ 采购意向记录</a>
+        <div class="side-tip">
+            <strong>乡村产业数字化</strong>
+            <p>汇总采购意向，辅助了解市场需求，为农产品推介和后续沟通提供参考。</p>
+            <a href="index.html">← 返回平台首页</a>
+        </div>
+    </aside>
+
+    <main>
+        <!-- 数据总览区域 -->
+        <section class="content-section" id="overview">
+            <div class="page-heading">
+                <div>
+                    <h1>数据管理中心</h1>
+                    <p>采购意向汇总 · 产品需求分析 · 数据实时读取</p>
+                </div>
+                <button class="btn primary" id="refreshBtn2">重新获取数据</button>
+            </div>
+
+            <div id="alert" class="alert" role="status" aria-live="polite"></div>
+            <div class="dashboard">
+                <div class="card">
+                    <h3>累计咨询量</h3>
+                    <p id="totalCount">0</p>
+                </div>
+                <div class="card">
+                    <h3>农产品种类</h3>
+                    <p id="productCount">0</p>
+                </div>
+                <div class="card">
+                    <h3>采购总量</h3>
+                    <p id="totalQuantity">0</p>
+                </div>
+                <div class="card">
+                    <h3>今日新增</h3>
+                    <p id="todayCount">0</p>
+                </div>
+            </div>
+            <section class="stats">
+                <article class="stat">
+                    <div class="stat-label">采购意向总数</div>
+                    <div class="stat-value" id="totalRecords">—</div>
+                    <div class="stat-foot">后端保存的有效记录条数</div>
+                </article>
+                <article class="stat">
+                    <div class="stat-label">涉及产品种类</div>
+                    <div class="stat-value" id="productKinds">—</div>
+                    <div class="stat-foot">按意向产品名称统计</div>
+                </article>
+                <article class="stat">
+                    <div class="stat-label">意向采购数量合计</div>
+                    <div class="stat-value" id="total">—</div>
+                    <div class="stat-foot">不同产品单位可能不同，仅作数量汇总参考</div>
+                </article>
+            </section>
+
+            <div class="chart-container">
+                <div class="chart-box">
+                    <h2>农产品需求排行榜</h2>
+                    <div id="productChart"></div>
+                </div>
+                <div class="chart-box">
+                    <h2>采购意向趋势</h2>
+                    <div id="timeChart"></div>
+                </div>
+            </div>
+
+            <p class="disclaimer">
+                安全提示：当前版本用于本机竞赛演示。正式部署前，必须给管理页面及采购意向查询接口增加管理员身份认证和访问控制，并启用 HTTPS。请勿将包含真实联系电话的数据直接公开。
+            </p>
+        </section>
+
+        <!-- 需求统计区域 -->
+        <section class="content-section" id="chartPanel">
+            <div class="page-heading">
+                <div>
+                    <h1>需求统计</h1>
+                    <p>产品意向分布 · 数据统计分析</p>
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <article class="panel">
+                    <div class="panel-heading">
+                        <h2>产品意向分布</h2>
+                        <span>按记录条数统计</span>
+                    </div>
+                    <div class="chart-wrap">
+                        <canvas id="chart" aria-label="各产品采购意向记录数量柱状图"></canvas>
+                        <div class="chart-empty" id="chartEmpty">暂无采购意向数据</div>
+                    </div>
+                    <div class="legend">说明：每条记录计为一次意向登记，不代表实际成交量。</div>
+                </article>
+
+                <article class="panel">
+                    <div class="panel-heading">
+                        <h2>数据说明</h2>
+                        <span>统计口径</span>
+                    </div>
+                    <p style="font-size:13px;color:#667166;line-height:2">
+                        本页面直接读取后端接口返回的数据。
+                        <br>① 意向总数：当前记录条数。
+                        <br>② 产品种类：不同产品名称的数量。
+                        <br>③ 数量合计：登记采购数量的算术合计。
+                        <br>④ 产品分布：不同产品对应的意向记录数。
+                    </p>
+                    <div style="padding:13px;background:#f3f5ee;border-radius:5px;font-size:12px;color:#697568">
+                        数据仅反映登记意向，不等同于真实成交、实际销售额或农户收入。
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- 采购意向记录区域 -->
+        <section class="content-section" id="records">
+            <div class="page-heading">
+                <div>
+                    <h1>采购意向记录</h1>
+                    <p>搜索 · 查看 · 管理采购意向数据</p>
+                </div>
+                <span id="recordCount" style="font-size:12px;color:var(--muted)">等待加载</span>
+            </div>
+
+            <div class="panel">
+                <div class="table-tools">
+                    <input class="search" id="searchInput"
+                           placeholder="搜索联系人、产品或备注内容…" aria-label="搜索采购意向记录">
+                    <button class="btn" id="clearSearch">清空搜索</button>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>记录编号</th>
+                            <th>联系人</th>
+                            <th>联系电话</th>
+                            <th>意向产品</th>
+                            <th>采购数量</th>
+                            <th>需求备注</th>
+                            <th>提交时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="recordsBody">
+                        <tr><td colspan="7" class="empty-row">正在读取数据…</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <span id="showingCount">显示 0 条记录</span>
+                    <span>数据来源：本地 Express 后端</span>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+    const API_URL = "http://localhost:3000/api/inquiries";
+
+    let data = [];
+    let loading = false;
+
+    const $ = id => document.getElementById(id);
+
+    function showAlert(message, type) {
+        $("alert").textContent = message;
+        $("alert").className = "alert show " + type;
+    }
+
+    function hideAlert() {
+        $("alert").className = "alert";
+    }
+
+    function escapeHTML(value) {
+        return String(value ?? "").replace(/[&<>"']/g, ch => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        })[ch]);
+    }
+
+    function formatDate(value) {
+        if (!value) return "—";
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return "—";
+        return date.toLocaleString("zh-CN", { hour12: false });
+    }
+
+    function renderStats(records) {
+        const products = new Set(records.map(r => r.product).filter(Boolean));
+        const quantity = records.reduce((sum, r) => {
+            const n = Number(r.quantity);
+            return sum + (Number.isFinite(n) && n > 0 ? n : 0);
+        }, 0);
+
+        $("totalRecords").textContent = records.length.toLocaleString("zh-CN");
+        $("productKinds").textContent = products.size.toLocaleString("zh-CN");
+        $("totalQuantity").textContent = quantity.toLocaleString("zh-CN");
+    }
+
+    function drawChart(records) {
+        const canvas = $("chart");
+        const empty = $("chartEmpty");
+        const ctx = canvas.getContext("2d");
+
+        const counts = {};
+        records.forEach(record => {
+            const name = record.product || "未填写产品";
+            counts[name] = (counts[name] || 0) + 1;
+        });
+
+        const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+
+        if (!entries.length) {
+            canvas.style.display = "none";
+            empty.classList.add("show");
+            return;
+        }
+
+        canvas.style.display = "block";
+        empty.classList.remove("show");
+
+        const rect = canvas.getBoundingClientRect();
+        const width = Math.max(280, rect.width);
+        const height = 270;
+        const dpr = window.devicePixelRatio || 1;
+
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        ctx.clearRect(0, 0, width, height);
+
+        const left = 38;
+        const right = 14;
+        const top = 18;
+        const bottom = 62;
+        const plotWidth = width - left - right;
+        const plotHeight = height - top - bottom;
+        const maxValue = Math.max(1, ...entries.map(item => item[1]));
+        const tickStep = Math.max(1, Math.ceil(maxValue / 4));
+        const axisMax = Math.ceil(maxValue / tickStep) * tickStep;
+
+        ctx.font = "11px Microsoft YaHei, sans-serif";
+        ctx.textAlign = "right";
+        ctx.textBaseline = "middle";
+
+        for (let value = 0; value <= axisMax; value += tickStep) {
+            const y = top + plotHeight - value / axisMax * plotHeight;
+            ctx.strokeStyle = "#edf0e8";
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(left, y);
+            ctx.lineTo(width - right, y);
+            ctx.stroke();
+
+            ctx.fillStyle = "#8a9086";
+            ctx.fillText(String(value), left - 9, y);
+        }
+
+        const slot = plotWidth / entries.length;
+        const barWidth = Math.min(48, slot * 0.55);
+
+        entries.forEach(([name, value], index) => {
+            const x = left + slot * index + (slot - barWidth) / 2;
+            const barHeight = value / axisMax * plotHeight;
+            const y = top + plotHeight - barHeight;
+
+            ctx.fillStyle = "#376b4b";
+            ctx.fillRect(x, y, barWidth, barHeight);
+
+            ctx.fillStyle = "#244b35";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "bottom";
+            ctx.fillText(String(value), x + barWidth / 2, Math.max(top + 11, y - 5));
+
+            ctx.fillStyle = "#697568";
+            ctx.textBaseline = "top";
+
+            let label = name;
+            if (label.length > 6) label = label.slice(0, 5) + "…";
+            ctx.fillText(label, x + barWidth / 2, top + plotHeight + 12);
+        });
+    }
+
+    function renderTable() {
+        const keyword = $("searchInput").value.trim().toLowerCase();
+
+        const filtered =data.filter(record => {
+            const text = [
+                record.id,
+                record.name,
+                record.phone,
+                record.product,
+                record.quantity,
+                record.note,
+                record.createdAt
+            ].join(" ").toLowerCase();
+
+            return text.includes(keyword);
+        });
+
+        const body = $("recordsBody");
+
+        if (!filtered.length) {
+            body.innerHTML = '<tr><td colspan="7" class="empty-row">没有找到匹配的采购意向记录</td></tr>';
+        } else {
+            body.innerHTML = filtered.slice().reverse().map(record => `
+    <tr>
+        <td>${escapeHTML(String(record.id || "").slice(-8) || "—")}</td>
+        <td>${escapeHTML(record.name || "—")}</td>
+        <td>${escapeHTML(record.phone || "—")}</td>
+        <td><span class="product-tag">${escapeHTML(record.product || "—")}</span></td>
+        <td>${escapeHTML(record.quantity ?? "—")}</td>
+        <td title="${escapeHTML(record.note || "")}">${escapeHTML(record.note || "—")}</td>
+        <td>${escapeHTML(formatDate(record.createdAt))}</td>
+        <td><button class="btn" style="color:#a53b2b;border-color:#f0d0c8" data-delete="${record.id}">删除</button></td>
+    </tr>
+`).join("");
+        }
+
+        $("recordCount").textContent = `共 ${data.length} 条记录`;
+        $("showingCount").textContent = `当前显示 ${filtered.length} 条记录`;
+    }
+
+    async function loadData() {
+        if (loading) return;
+
+        loading = true;
+        $("refreshBtn").disabled = true;
+        $("refreshBtn2").disabled = true;
+        $("connectionText").textContent = "正在读取";
+        hideAlert();
+
+        try {
+            const response = await fetch(API_URL, {
+                method: "GET",
+                cache: "no-store",
+                headers: {
+                    "admin-token": "xiangwei2026"
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error("后端返回 HTTP " + response.status);
+            }
+
+            const result = await response.json();
+
+            if (!result.success || !Array.isArray(result.data)) {
+                throw new Error("接口返回的数据格式不正确");
+            }
+
+            data = result.data;
+            // 数据统计
+
+            document.getElementById("totalCount")
+                .innerText=data.length;
+            // ============================
+// ECharts 数据可视化
+// ============================
+
+
+// 1.农产品需求排行
+
+            let productMap={};
+
+
+            data.forEach(item=>{
+
+                let name=item.product;
+
+
+                if(productMap[name]){
+
+                    productMap[name]++;
+
+                }else{
+
+                    productMap[name]=1;
+
+                }
+
+            });
+
+
+
+            let productNames=Object.keys(productMap);
+
+            let productValues=Object.values(productMap);
+
+
+
+            let productChart=
+                echarts.init(
+                    document.getElementById("productChart")
+                );
+
+
+
+            productChart.setOption({
+
+                title:{
+                    text:""
+                },
+
+
+                tooltip:{},
+
+
+                xAxis:{
+                    type:"category",
+                    data:productNames
+                },
+
+
+                yAxis:{
+                    type:"value"
+                },
+
+
+                series:[{
+
+                    data:productValues,
+
+                    type:"bar",
+
+                    barWidth:"40%"
+
+                }]
+
+            });
+
+
+
+
+// ============================
+// 2.采购时间趋势
+// ============================
+
+
+            let timeMap={};
+
+
+            data.forEach(item=>{
+
+
+                let day=
+                    item.createdAt.substring(0,10);
+
+
+                if(timeMap[day]){
+
+                    timeMap[day]++;
+
+                }else{
+
+                    timeMap[day]=1;
+
+                }
+
+
+            });
+
+
+
+            let days=Object.keys(timeMap).sort();
+
+
+            let counts=days.map(
+                day=>timeMap[day]
+            );
+
+
+
+            let timeChart=
+                echarts.init(
+                    document.getElementById("timeChart")
+                );
+
+
+
+            timeChart.setOption({
+
+                tooltip:{},
+
+
+                xAxis:{
+
+                    type:"category",
+
+                    data:days
+
+                },
+
+
+                yAxis:{
+
+                    type:"value"
+
+                },
+
+
+                series:[{
+
+                    data:counts,
+
+                    type:"line",
+
+                    smooth:true
+
+                }]
+
+
+            });
+
+
+// 产品种类统计
+
+            let products=[];
+
+            data.forEach(item=>{
+
+                if(!products.includes(item.product)){
+
+                    products.push(item.product);
+
+                }
+
+            });
+
+
+            document.getElementById("productCount")
+                .innerText=products.length;
+
+
+
+// 总采购数量
+
+            let total=0;
+
+            data.forEach(item=>{
+
+                total+=Number(item.quantity);
+
+            });
+
+
+            document.getElementById("totalQuantity")
+                .innerText=total+"斤";
+
+
+
+// 今日新增
+
+            let today=0;
+
+            let now=new Date()
+                .toISOString()
+                .substring(0,10);
+
+
+            data.forEach(item=>{
+
+                if(item.createdAt.startsWith(now)){
+
+                    today++;
+
+                }
+
+            });
+
+
+            document.getElementById("todayCount")
+                .innerText=today;
+            renderStats(data);
+            renderTable();
+            drawChart(data);
+
+            $("connectionText").textContent = "后端已连接";
+            showAlert("数据读取成功，已加载 " + data.length + " 条采购意向记录。", "info");
+        } catch (error) {
+            console.error("管理后台读取失败：", error);
+            $("connectionText").textContent = "连接失败";
+            showAlert(
+                "无法读取采购意向数据。请检查 Node.js 服务是否运行，以及 http://localhost:3000/api/inquiries 是否可访问。错误：" + error.message,
+                "error"
+            );
+        } finally {
+            loading = false;
+            $("refreshBtn").disabled = false;
+            $("refreshBtn2").disabled = false;
+        }
+    }
+
+    $("refreshBtn").addEventListener("click", loadData);
+    $("refreshBtn2").addEventListener("click", loadData);
+    $("searchInput").addEventListener("input", renderTable);
+    $("clearSearch").addEventListener("click", () => {
+        $("searchInput").value = "";
+        renderTable();
+    });
+
+    document.getElementById("recordsBody").addEventListener("click", async function(e) {
+        const btn = e.target.closest("[data-delete]");
+        if (!btn) return;
+
+        const id = btn.getAttribute("data-delete");
+        const record = data.find(r => r.id === id);
+        if (!record) return;
+
+        const confirmed = confirm(
+            "确定要删除这条记录吗？\n\n" +
+            "联系人：" + (record.name || "—") + "\n" +
+            "意向产品：" + (record.product || "—") + "\n\n" +
+            "删除后无法恢复。"
+        );
+
+        if (!confirmed) return;
+
+        btn.disabled = true;
+        btn.textContent = "删除中…";
+
+        try {
+            const response = await fetch(API_URL + "/" + id, {
+                method: "DELETE",
+                headers: {
+                    "admin-token": "xiangwei2026"
+                }
+            });
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                throw new Error(result.message || "删除失败");
+            }
+
+            data = data.filter(r => r.id !== id);
+            renderTable();
+            renderStats(data);
+            drawChart(data);
+            showAlert("已删除记录：" + (record.name || "—") + " - " + (record.product || "—"), "info");
+        } catch (error) {
+            console.error("删除失败：", error);
+            showAlert("删除失败：" + error.message, "error");
+        } finally {
+            btn.disabled = false;
+            btn.textContent = "删除";
+        }
+    });
+
+    let resizeTimer;
+    window.addEventListener("resize", () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => drawChart(data), 150);
+    });
+
+    // 左侧导航切换功能
+    const navLinks = document.querySelectorAll('.side-link[data-section]');
+    const sections = document.querySelectorAll('.content-section');
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            navLinks.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+            sections.forEach(s => s.classList.remove('active'));
+            const targetId = this.getAttribute('data-section');
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+        });
+    });
+
+    if (sections.length > 0) {
+        sections[0].classList.add('active');
+    }
+
+
+    loadData();
+</script>
+<link rel="stylesheet" href="ai-widget.css">
+<script src="ai-widget.js"></script>
+</body>
+</html>
