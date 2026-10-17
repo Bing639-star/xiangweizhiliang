@@ -23,9 +23,10 @@ const DATA_FILE = path.join(__dirname, "data.json");
 app.use(cors());
 app.use(express.json({ limit: "20kb" }));
 
-app.use(express.static(path.join(__dirname, "..", "frontend")));
+app.use(express.static(path.join(__dirname, "frontend")));
+
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "frontend", "index.html"));
+    res.sendFile(path.join(__dirname, "frontend", "index.html"));
 });
 
 if (!fs.existsSync(DATA_FILE)) {
