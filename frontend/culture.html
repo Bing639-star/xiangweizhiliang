@@ -1,0 +1,357 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="乡味智链乡村文化、特色产业与产地风貌数字展示">
+    <title>乡村文化与产地风貌｜乡味智链</title>
+    <style>
+        :root{
+            --green:#244b35;
+            --green2:#416b4a;
+            --gold:#c69b58;
+            --cream:#f7f6ef;
+            --ink:#27382c;
+            --muted:#788175;
+            --line:#e8e9df;
+        }
+        *{box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{
+            margin:0;color:var(--ink);background:#fff;
+            font-family:"Microsoft YaHei","PingFang SC",Arial,sans-serif;
+        }
+        a{text-decoration:none;color:inherit}
+        button{font:inherit;cursor:pointer}
+        .nav{
+            height:76px;display:flex;align-items:center;justify-content:space-between;
+            gap:20px;padding:0 5%;background:#f7f6ef ;border-bottom:1px solid var(--line);
+            position:sticky;top:0;z-index:10
+        }
+        .logo{font-size:23px;font-weight:800;color:var(--green);white-space:nowrap}
+        .logo-mark{
+            display:inline-grid;place-items:center;width:42px;height:42px;
+            background:var(--green);color:#f2d59b;border-radius:50% 50% 45% 15%;
+            margin-right:0;font-size:23px
+        }
+        .nav-links{display:flex;align-items:center;gap:30px;font-size:14px;color:#69796e}
+        .nav-links a{color:#69796e;text-decoration:none;transition:color 0.2s ease}
+        .nav-links a:hover,.nav-links a.active{color:#b28643;font-weight:700}
+        .nav-cta{background:var(--green);color:#fff;padding:11px 20px;border-radius:5px;font-size:14px}
+        .hero{
+            min-height:490px;display:flex;align-items:center;padding:75px 8%;
+            position:relative;overflow:hidden;color:#fff;
+            background:
+                    linear-gradient(90deg,rgba(21,49,31,.91),rgba(21,49,31,.55) 58%,rgba(21,49,31,.1)),
+                    url("images/wu.png")
+                    #34553a;
+        }
+        .hero-content{max-width:690px}
+        .eyebrow{font-size:11px;letter-spacing:4px;color:#e5c992;margin-bottom:20px}
+        .hero h1{font-size:clamp(34px,5vw,55px);line-height:1.4;margin:0 0 18px}
+        .hero p{font-size:14px;line-height:2.1;color:#e2e9df;max-width:580px}
+        .hero-btn{
+            display:inline-block;margin-top:18px;background:#d6b574;color:#263b2c;
+            padding:14px 22px;font-size:12px;font-weight:bold
+        }
+        .section{padding:75px 8%;scroll-margin-top:95px}
+        .kicker{font-size:11px;letter-spacing:3px;color:#a17c40;margin-bottom:12px}
+        .section h2{font-size:29px;color:var(--green);margin:0 0 13px}
+        .lead{font-size:13px;line-height:2;color:var(--muted);max-width:720px}
+        .intro-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+        .intro-image{
+            width:100%;height:370px;object-fit:cover;background:#e9ecdf;display:block
+        }
+        .intro-note{padding:20px;background:var(--cream);font-size:12px;color:#667166;line-height:2;margin-top:20px}
+        .values{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:30px}
+        .value-card{padding:25px;border:1px solid var(--line);background:#fff}
+        .value-no{font-size:26px;color:var(--gold);margin-bottom:17px}
+        .value-card h3{font-size:15px;color:var(--green);margin:0 0 12px}
+        .value-card p{font-size:12px;line-height:2;color:var(--muted);margin:0}
+        .cream{background:var(--cream)}
+        .section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:32px}
+        .small-note{font-size:11px;color:var(--muted);line-height:1.8}
+        .gallery{display:grid;grid-template-columns:1.2fr .8fr .8fr;grid-template-rows:220px 180px;gap:14px}
+        .gallery-item{position:relative;overflow:hidden;background:#dfe5d8}
+        .gallery-item:first-child{grid-row:span 2}
+        .gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+        .gallery-item:hover img{transform:scale(1.04)}
+        .gallery-caption{
+            position:absolute;left:0;right:0;bottom:0;padding:35px 16px 15px;color:white;
+            background:linear-gradient(transparent,rgba(17,35,22,.8));font-size:13px
+        }
+        .gallery-caption small{display:block;font-size:10px;margin-top:5px;color:#e0e6dc}
+        .process{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:35px}
+        .step{border-top:2px solid var(--gold);padding-top:20px}
+        .step-number{font-size:12px;color:var(--gold);letter-spacing:2px}
+        .step h3{font-size:15px;color:var(--green);margin:12px 0}
+        .step p{font-size:12px;line-height:1.9;color:var(--muted);margin:0}
+        .story-grid{display:grid;grid-template-columns:1fr 1fr;gap:45px;align-items:center}
+        .story-image{width:100%;height:360px;object-fit:cover;background:#e5e9de}
+        .story-text p{font-size:13px;line-height:2.2;color:var(--muted)}
+        .story-quote{border-left:3px solid var(--gold);padding:12px 18px;background:var(--cream);font-size:13px;line-height:2;color:var(--green);margin-top:22px}
+        .evidence{
+            display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:28px
+        }
+        .evidence-card{border:1px solid var(--line);padding:23px;background:#fff}
+        .evidence-card h3{font-size:14px;color:var(--green);margin:0 0 10px}
+        .evidence-card p{font-size:12px;color:var(--muted);line-height:1.9;margin:0}
+        .evidence-card span{display:inline-block;font-size:10px;color:#987746;background:#f7f0df;padding:5px 8px;margin-bottom:15px}
+        .cta{
+            padding:55px 8%;background:#eae9dd;display:flex;align-items:center;
+            justify-content:space-between;gap:25px
+        }
+        .cta h2{font-size:24px;color:var(--green);margin:0 0 12px}
+        .cta p{font-size:12px;line-height:1.9;color:var(--muted);margin:0}
+        .cta a{display:inline-block;padding:15px 22px;background:var(--green);color:white;font-size:12px;white-space:nowrap}
+        footer{
+            background:#1c3928;color:#d6dfd3;padding:30px 8%;display:flex;
+            justify-content:space-between;align-items:center;gap:20px;font-size:11px;line-height:2
+        }
+        footer a{color:#e6d0a0}
+        @media(max-width:850px){
+            .nav{padding:0 4%;gap:12px}
+            .nav-links{gap:13px}
+            .section{padding:55px 5%}
+            .intro-grid,.story-grid{gap:25px}
+            .gallery{grid-template-columns:1fr 1fr;grid-template-rows:220px 180px 180px}
+            .gallery-item:first-child{grid-row:span 2}
+            .process{grid-template-columns:repeat(2,minmax(0,1fr))}
+        }
+        @media(max-width:600px){
+            .nav{height:auto;min-height:65px;flex-wrap:wrap;padding:12px 4%}
+            .logo{font-size:17px}
+            .logo-mark{width:32px;height:32px}
+            .nav-links{order:3;width:100%;overflow-x:auto;gap:19px;padding:5px 0}
+            .hero{min-height:410px;padding:50px 6%}
+            .section{padding:45px 5%}
+            .section h2{font-size:24px}
+            .intro-grid,.story-grid{grid-template-columns:1fr}
+            .intro-image,.story-image{height:245px}
+            .values,.evidence{grid-template-columns:1fr}
+            .gallery{grid-template-columns:1fr 1fr;grid-template-rows:210px 150px 150px;gap:9px}
+            .gallery-item:first-child{grid-column:span 2;grid-row:auto}
+            .process{grid-template-columns:1fr 1fr;gap:25px 15px}
+            .section-head{align-items:start;flex-direction:column}
+            .cta{padding:40px 6%;align-items:start;flex-direction:column}
+            footer{padding:25px 6%;align-items:start;flex-direction:column}
+        }
+    </style>
+</head>
+<body>
+
+<header class="nav">
+    <a class="logo" href="index.html">
+        <span class="logo-mark">乡</span>
+        乡味智链
+    </a>
+
+    <nav class="nav-links" aria-label="主导航">
+        <a href="index.html">首页</a>
+        <a href="product.html">产品档案</a>
+        <a class="active" href="culture.html">乡村文化</a>
+        <a href="ai-features.html">AI 功能</a>
+    </nav>
+
+    <a class="nav-cta" href="contact.html">合作咨询 ↗</a>
+</header>
+
+
+
+<section class="hero">
+    <div class="hero-content">
+        <div class="eyebrow">NANYANG RURAL CULTURE · LOCAL STORIES</div>
+        <h1>记录南阳乡土风貌<br>传递乡村产业价值</h1>
+        <p>
+            从南阳的特色农田、果园、月季基地与传统农耕生活出发，
+            记录地方产业、乡村风貌与乡土故事，让农产品背后的土地、
+            技艺与人被更多人看见。
+        </p>
+        <a class="hero-btn" href="#land">走进南阳乡村　↓</a>
+    </div>
+</section>
+
+<section class="section" id="land">
+    <div class="intro-grid">
+        <div>
+            <div class="kicker">OUR COUNTRYSIDE</div>
+            <h2>一方水土，孕育南阳好物</h2>
+            <p class="lead">
+                南阳地处河南西南部，拥有平原、丘陵与山地等多样地貌。
+                不同地域形成了各具特色的农业资源，也孕育出猕猴桃、香菇、
+                辛夷、月季、茶叶等特色产业。乡味智链通过数字化整理产地与
+                产品信息，帮助浏览者了解每一种好物背后的地方特色。
+            </p>
+
+        </div>
+        <video class="intro-image"
+               src="images/好山水.mp4"
+               autoplay muted loop playsinline               style="width:100%;height:100%;object-fit:cover;display:block;">
+        </video>
+    </div>
+
+    <div class="values">
+        <article class="value-card">
+            <div class="value-no">01</div>
+            <h3>自然资源</h3>
+            <p>展示当地地形、气候、水土与农业生产环境，帮助理解特色产品形成的自然背景。</p>
+        </article>
+        <article class="value-card">
+            <div class="value-no">02</div>
+            <h3>农耕文化</h3>
+            <p>记录当地传统农事、节庆习俗、特色饮食与生产经验，呈现乡村文化的独特价值。</p>
+        </article>
+        <article class="value-card">
+            <div class="value-no">03</div>
+            <h3>特色产业</h3>
+            <p>把农产品、生产主体与产地故事进行关联展示，为乡村品牌宣传和产业推介提供信息基础。</p>
+        </article>
+    </div>
+</section>
+
+<section class="section cream" id="gallery">
+    <div class="section-head">
+        <div>
+            <div class="kicker">LANDSCAPE COLLECTION</div>
+            <h2>南阳风貌图集</h2>
+            <p class="lead">用影像记录南阳土地、作物与乡村生活。</p>
+        </div>
+    </div>
+
+    <div class="gallery">
+        <div class="gallery-item">
+            <img src="images/田园2.jpg"
+                 alt="南阳田园风貌" loading="lazy">
+            <div class="gallery-caption">南阳田园风貌<small>田畴、村庄与农耕环境</small></div>
+        </div>
+        <div class="gallery-item">
+            <img src="images/月季.png"
+                 alt="月季种植与繁育" loading="lazy">
+            <div class="gallery-caption">月季种植与繁育<small>花卉产业 · 种植与繁育</small></div>
+        </div>
+        <div class="gallery-item">
+            <img src="images/西瓜.jpg"
+                 alt="特色果品采收" loading="lazy">
+            <div class="gallery-caption">特色果品采收<small>从果园到分选环节</small></div>
+        </div>
+        <div class="gallery-item">
+            <img src="images/农市场.png"
+                 alt="乡村农产品集市" loading="lazy">
+            <div class="gallery-caption">乡村农产品集市<small>从生产端走向市场</small></div>
+        </div>
+        <div class="gallery-item">
+            <img src="images/采茶.jpg"
+                 alt="茶园与农事活动" loading="lazy">
+            <div class="gallery-caption">茶园与农事活动<small>农业生产场景 · 日常劳动</small></div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="process">
+    <div class="kicker">FROM FARM TO STORY</div>
+    <h2>让农产品信息更清晰</h2>
+    <p class="lead">
+        以信息整理和数字化展示为基础，构建从产地信息到品牌传播、从产品介绍到采购意向收集的服务流程。
+    </p>
+
+    <div class="process">
+        <article class="step">
+            <div class="step-number">STEP 01</div>
+            <h3>产地信息整理</h3>
+            <p>收集经核实的产地、产品类型、生产方式和相关介绍。</p>
+        </article>
+        <article class="step">
+            <div class="step-number">STEP 02</div>
+            <h3>数字档案建设</h3>
+            <p>将分散的产品资料整理为结构清晰、便于浏览的网页档案。</p>
+        </article>
+        <article class="step">
+            <div class="step-number">STEP 03</div>
+            <h3>品牌内容传播</h3>
+            <p>通过图文展示讲述产品特点与乡土故事，提升信息可见度。</p>
+        </article>
+        <article class="step">
+            <div class="step-number">STEP 04</div>
+            <h3>产销意向对接</h3>
+            <p>收集潜在采购需求，帮助农户后续联系和了解市场反馈。</p>
+        </article>
+    </div>
+</section>
+
+<section class="section cream" id="stories">
+    <div class="story-grid">
+        <img class="story-image"
+             src="images/月季园.jpg"
+             alt="南阳月季产业" loading="lazy">
+        <div class="story-text">
+            <div class="kicker">NANYANG STORIES</div>
+            <h2>南阳特色产业的<br>三个真实故事</h2>
+            <p>
+                <strong>一朵月季的产业故事：</strong>从育苗、种植到花卉销售，
+                讲述南阳月季特色产业如何连接农户与市场。南阳市政府资料显示，
+                月季苗木繁育、花卉深加工与文化旅游之间形成了紧密联系。
+            </p>
+            <p>
+                <strong>一枚猕猴桃的产地故事：</strong>从果园管理、采收到分选包装，
+                展示西峡猕猴桃背后的生产流程。品种、产地、成熟季节与供应主体
+                共同构成了一份完整的数字档案。
+            </p>
+            <p>
+                <strong>一份香菇的加工故事：</strong>展示鲜品、干品等不同形态，
+                以及加工、储存和运输对产品展示的影响。西峡香菇从采收分选到
+                干鲜加工，体现了南阳菌菇产业的完整链条。
+            </p>
+            <div class="story-quote">
+                "数字技术的价值，在于让南阳真实的乡村资源更容易被发现、理解和连接。"
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="research">
+    <div class="kicker">FIELD RESEARCH</div>
+    <h2>用真实资料支撑数字化展示</h2>
+    <p class="lead">
+        乡村振兴项目不仅要有技术实现，也应当体现对实际场景的理解。
+        以下三类资料可作为团队完善参赛作品的重点。
+    </p>
+
+    <div class="evidence">
+        <article class="evidence-card">
+            <span>资料一</span>
+            <h3>乡村与产业基础资料</h3>
+            <p>记录实际村庄、特色产业、产品种类和生产主体。资料来源与统计时间应明确。</p>
+        </article>
+        <article class="evidence-card">
+            <span>资料二</span>
+            <h3>农户需求与访谈</h3>
+            <p>了解农户在线宣传、品牌介绍和采购沟通中遇到的问题。访谈前征得对方同意。</p>
+        </article>
+        <article class="evidence-card">
+            <span>资料三</span>
+            <h3>平台使用与测试记录</h3>
+            <p>记录产品页面访问、测试意向提交和后台读取情况。区分真实调研数据与模拟测试数据。</p>
+        </article>
+    </div>
+</section>
+
+<section class="cta">
+    <div>
+        <h2>让南阳好物连接更多合作机会</h2>
+        <p>无论您是特色农产品生产者、合作社、加工企业，还是采购需求方，<br>都可以通过平台了解产品信息、提交合作意向。</p>
+    </div>
+    <a href="contact.html">登记合作意向　↗</a>
+</section>
+
+<footer>
+    <div>
+        <strong>乡味智链 · 河南南阳乡村特色农产品数字化展示平台</strong><br>
+        以数字化建档、乡土文化展示与产销信息对接，助力南阳特色农业传播。
+    </div>
+    <div><a href="index.html">首页</a>　·　<a href="product.html">产品档案</a>　·　<a href="contact.html">合作咨询</a></div>
+</footer>
+<link rel="stylesheet" href="ai-widget.css">
+<script src="ai-widget.js"></script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+/* 乡味智链：全局悬浮 AI 助手 */
+#xiangwei-ai-root {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 9999;
+    font-family: "Microsoft YaHei", sans-serif;
+}
+
+.xw-ai-launcher {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 13px 18px;
+    border: 0;
+    border-radius: 999px;
+    background: #20543b;
+    color: #fff;
+    box-shadow: 0 8px 28px #163b2c40;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.xw-ai-launcher:hover {
+    background: #2c6b4a;
+    transform: translateY(-2px);
+}
+
+.xw-ai-window {
+    display: none;
+    position: absolute;
+    right: 0;
+    bottom: 66px;
+    width: 360px;
+    height: 490px;
+    max-height: calc(100vh - 110px);
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #e4e8df;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 14px 50px #102b1e30;
+}
+
+.xw-ai-window.is-open {
+    display: flex;
+}
+
+.xw-ai-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px;
+    background: #20543b;
+    color: white;
+}
+
+.xw-ai-brand {
+    flex: 1;
+}
+
+.xw-ai-brand strong {
+    display: block;
+    font-size: 16px;
+}
+
+.xw-ai-brand small {
+    display: block;
+    margin-top: 5px;
+    color: #dce9df;
+    font-size: 11px;
+}
+
+.xw-ai-close {
+    border: 0;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    font-size: 23px;
+}
+
+.xw-ai-messages {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+    padding: 16px;
+    background: #fafbf8;
+}
+
+.xw-ai-message {
+    max-width: 88%;
+    padding: 11px 13px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.xw-ai-message.bot {
+    align-self: flex-start;
+    border: 1px solid #e5e9e1;
+    background: white;
+    color: #304438;
+}
+
+.xw-ai-message.user {
+    align-self: flex-end;
+    background: #20543b;
+    color: white;
+}
+
+.xw-ai-quick {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    padding: 10px 14px;
+    background: #fafbf8;
+}
+
+.xw-ai-quick button {
+    padding: 7px 10px;
+    border: 1px solid #d8e2d5;
+    border-radius: 999px;
+    background: white;
+    color: #20543b;
+    cursor: pointer;
+    font-size: 11px;
+}
+
+.xw-ai-quick button:hover {
+    background: #edf4eb;
+}
+
+.xw-ai-form {
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    border-top: 1px solid #e7eae4;
+}
+
+.xw-ai-input {
+    flex: 1;
+    min-width: 0;
+    padding: 11px;
+    border: 1px solid #dce2d8;
+    border-radius: 10px;
+    outline: none;
+    font-size: 13px;
+}
+
+.xw-ai-input:focus {
+    border-color: #4e8964;
+}
+
+.xw-ai-send {
+    padding: 0 15px;
+    border: 0;
+    border-radius: 10px;
+    background: #20543b;
+    color: white;
+    cursor: pointer;
+}
+
+.xw-ai-send:disabled {
+    opacity: 0.55;
+    cursor: wait;
+}
+
+.xw-ai-footer {
+    padding: 0 12px 10px;
+    background: #fff;
+    text-align: center;
+}
+
+.xw-ai-footer a {
+    color: #477354;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+@media (max-width: 480px) {
+    #xiangwei-ai-root {
+        right: 14px;
+        bottom: 14px;
+    }
+
+    .xw-ai-window {
+        position: fixed;
+        right: 10px;
+        bottom: 76px;
+        width: calc(100vw - 20px);
+        height: min(500px, calc(100vh - 100px));
+    }
+}
