@@ -144,10 +144,6 @@ app.delete("/api/inquiries/:id", checkAdmin, (req, res) => {
     }
 });
 
-/* ============================
-   AI 测试接口（验证 AI 连接是否正常）
-   浏览器访问：http://localhost:3000/api/ai/test
-============================ */
 app.get("/api/ai/test", async (req, res) => {
     try {
         const baseUrl = process.env.AI_BASE_URL?.replace(/\/+$/, "");
@@ -224,38 +220,7 @@ app.post("/api/ai/chat", async (req, res) => {
                 message: "请输入问题"
             });
         }
-        // const userMsg = message.toLowerCase();
-        //
-        // const knowledgeFile = path.join(__dirname, "knowledge-base.json");
-        // let knowledgeBase = [];
-        // if (fs.existsSync(knowledgeFile)) {
-        //     knowledgeBase = JSON.parse(fs.readFileSync(knowledgeFile, "utf8"));
-        // }
-        //
-        // let matchedEntry = null;
-        // let maxScore = 0;
-        //
-        // for (const entry of knowledgeBase) {
-        //     let score = 0;
-        //     for (const keyword of entry.keywords) {
-        //         if (userMsg.includes(keyword.toLowerCase())) {
-        //             score += keyword.length;
-        //         }
-        //     }
-        //     if (score > maxScore) {
-        //         maxScore = score;
-        //         matchedEntry = entry;
-        //     }
-        // }
-        //
-        // if (matchedEntry && maxScore >= 2) {
-        //     console.log("[知识库匹配] 关键词得分:", maxScore, "匹配内容:", matchedEntry.keywords);
-        //     return res.json({
-        //         success: true,
-        //         answer: matchedEntry.answer,
-        //         source: "knowledge-base"
-        //     });
-        // }
+       
         const systemPrompt = `
 你是"乡味智链"的南阳乡村产业智能助手。
 
