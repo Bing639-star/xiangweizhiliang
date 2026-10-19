@@ -844,7 +844,7 @@
             console.error("管理后台读取失败：", error);
             $("connectionText").textContent = "连接失败";
             showAlert(
-                "无法读取采购意向数据。请检查 Node.js 服务是否运行，以及 http://localhost:3000/api/inquiries 是否可访问。错误：" + error.message,
+                "无法读取采购意向数据，请稍后重试。错误：" + error.message,
                 "error"
             );
         } finally {
