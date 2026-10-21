@@ -411,8 +411,8 @@
 </div>
 
 <script>
-    const API_URL = "/api/inquiries";
-
+    const API_URL = (window.location.protocol === "file:" || (window.location.hostname === "localhost" && window.location.port !== "3000")) ? "http://localhost:3000/api/inquiries" : "/api/inquiries";
+    
     let data = [];
     let loading = false;
 
